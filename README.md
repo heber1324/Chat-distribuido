@@ -174,6 +174,4 @@ Desarrollo de software
 
 Sistemas distribuidos
 
-Redes
-
 Análisis de datos
