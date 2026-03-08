@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ChatDistributed" default="compile" basedir=".">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="lib.dir" value="lib"/>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" encoding="UTF-8" includeantruntime="false">
+            <classpath>
+                <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            </classpath>
+        </javac>
+        <!-- copiar recursos -->
+        <copy todir="${classes.dir}">
+            <fileset dir="${src.dir}" includes="**/*.properties"/>
+        </copy>
+    </target>
+
+    <target name="run-server" depends="compile">
+        <java classname="com.chat.distributed.Server" fork="true">
+            <classpath>
+                <pathelement path="${classes.dir}"/>
+                <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            </classpath>
+            <arg value="12345"/> <!-- puerto -->
+            <arg value="10"/>    <!-- historial N -->
+        </java>
+    </target>
+
+    <target name="run-client" depends="compile">
+        <java classname="com.chat.distributed.Client" fork="true">
+            <classpath>
+                <pathelement path="${classes.dir}"/>
+                <fileset dir="${lib.dir}" includes="**/*.jar"/>
+            </classpath>
+            <!-- Ejemplo: pasar args via ant -Dserver=... -->
+            <arg value="${server}"/>
+            <arg value="${port}"/>
+            <arg value="${name}"/>
+        </java>
+    </target>
+</project>
